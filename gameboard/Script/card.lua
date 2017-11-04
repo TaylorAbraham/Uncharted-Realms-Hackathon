@@ -5,9 +5,11 @@ toughness = 0
 effects = ""
 back = ""
 front = ""
+frame= "/Card/GoldFrame.png"
+deckframe="/Card/SilverFrame.png"
 
 local function createCard(int1, int2, strArr, backPath, frontPath)
-    print("Test function called")
+    --print("Test function called")
     power = int1
     toughness = int2
     effects = strArr
@@ -30,11 +32,15 @@ end
 local function drawpng_back(x, y)
     drawn = love.graphics.newImage(back)
     love.graphics.draw(drawn, x , y)
+    frameback = love.graphics.newImage(deckframe)
+    love.graphics.draw(frameback, x, y)
 end
 
 local function drawpng_front(x, y)
     drawn = love.graphics.newImage(front)
     love.graphics.draw(drawn, x , y)
+    framefront = love.graphics.newImage(frame)
+    love.graphics.draw(framefront, x , y)
 end
 
 local function getValues()
