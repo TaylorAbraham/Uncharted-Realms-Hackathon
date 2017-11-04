@@ -4,15 +4,23 @@ import matplotlib.pyplot as plt
 import statsmodels.formula.api as smf
 import sklearn
 import random
-import namegen
-import imagegen
+import json
+# Local libraries
+import modules.namegen as namegen
+import modules.imagegen as imagegen
+
+csv_name = 'data/cards.csv'
 
 HP_vals = [1,1,1,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,6,6,6,7,7,8,8,9,9,10]
 
 # Generates new cards
 def generate_card(num_cards):
+    try:
+        num_cards = int(num_cards)
+    except ValueError:
+        return json.dumps({})
     # Load card data
-    data = pd.read_csv('cards.csv', index_col=0)
+    data = pd.read_csv(csv_name, index_col=0)
 
     # Define features
     feature_cols = ['POW', 'HP']
@@ -53,10 +61,22 @@ def generate_card(num_cards):
         card_dict['IMG'].append(img)
 
     cards = pd.DataFrame(card_dict, columns=['NAME', 'POW', 'HP', 'IMG'])
+
     # Make predictions and combine the dataframes to form the finished cards
     costs = pd.DataFrame({'CLK': lm.predict(cards).round(0).astype(int)})
     results = pd.concat([cards, costs], axis=1)
-    return results
+
+    # Build the JSON for the response
+    response = {'cards': []}
+    for index, card in results.iterrows():
+        response['cards'].append({})
+        response['cards'][index]['NAME'] = card['NAME']
+        response['cards'][index]['POW'] = card['POW']
+        response['cards'][index]['HP'] = card['HP']
+        response['cards'][index]['CLK'] = card['CLK']
+        response['cards'][index]['IMG'] = card['IMG']
+
+    return json.dumps(response)
 
 if __name__ == "__main__":
     cards = generate_card(3)
