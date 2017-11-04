@@ -1,7 +1,21 @@
 local cardScript = require("Script.card")
 
+deckSize = 30
+handSize = 3
+
+deck = {}
+hand = {}
+
 function love.load()
     canvas = love.graphics.newCanvas(800, 600)
+
+    for i=1,deckSize do
+        deck[i] = Card.createCard(1, 2, {"a"})
+    end
+
+    for i=1,handSize do
+        hand[i] = deck[i]
+    end
 
     -- cardScript.init(200, 100)   
  
