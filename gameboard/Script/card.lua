@@ -1,9 +1,9 @@
 local http = require "socket.http"
 local card = {}
 
-power = 0
-toughness = 0
-clock = 0
+local power = 0
+local toughness = 0
+local clock = 0
 back = ""
 front = ""
 frame= "/Card/GoldFrame.png"
