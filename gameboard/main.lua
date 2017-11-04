@@ -26,7 +26,8 @@ function love.draw()
     love.graphics.draw(canvas)
     -- Observe the difference if the Canvas is drawn with the regular alpha blend mode instead.
     love.graphics.setBlendMode("alpha")
-    cardScript.drawandpos(300, 400, "HI LOVE")
+    -- cardScript.drawandpos(300, 400, "HI LOVE")
+    cardScript.drawpng("/Card/BackTexture.png", 600, 300)
     -- cardScript.draw()
     love.graphics.draw(canvas, 100, 0)
 
