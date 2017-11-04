@@ -1,3 +1,6 @@
+*.swp
+config.py
+
 ### LUA/LOVE
 # Compiled Lua sources
 luac.out
