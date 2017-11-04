@@ -10,7 +10,7 @@ function love.load()
     canvas = love.graphics.newCanvas(800, 600)
 
     for i=1,deckSize do
-        deck[i] = Card.createCard(1, 2, {"a"})
+        deck[i] = cardScript.createCard(1, 2, {"a"}, "/Card/BackTexture.png", "/Card/FrontTexture.png")
     end
 
     for i=1,handSize do
@@ -41,11 +41,12 @@ function love.draw()
     -- Observe the difference if the Canvas is drawn with the regular alpha blend mode instead.
     love.graphics.setBlendMode("alpha")
     -- cardScript.drawandpos(300, 400, "HI LOVE")
-    cardScript.drawpng("/Card/BackTexture.png", 600, 300)
+    cardScript.drawpng_back(600, 300)
+    cardScript.drawpng_front(200, 300)
+    cardScript.drawpng_front(300, 300)
+    cardScript.drawpng_front(400, 300)
     -- cardScript.draw()
     love.graphics.draw(canvas, 100, 0)
-
- 
 end
 
 function newAnimation(image, width, height, duration)
