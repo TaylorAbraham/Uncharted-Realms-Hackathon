@@ -15,7 +15,10 @@ HP_vals = [1,1,1,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,6,6,6,7,7,8,8,9,9,10]
 
 # Generates new cards
 def generate_card(num_cards):
-    num_cards = int(num_cards)
+    try:
+        num_cards = int(num_cards)
+    except ValueError:
+        return json.dumps({})
     # Load card data
     data = pd.read_csv(csv_name, index_col=0)
 
