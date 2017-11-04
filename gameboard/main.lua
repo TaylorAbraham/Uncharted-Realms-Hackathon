@@ -12,10 +12,12 @@ hand = {}
 function love.load()
     canvas = love.graphics.newCanvas(800, 600)
 
-    result, statuscode, content = http.request("http://localhost:5000/cards/generate/3")    
+    result, statuscode, content = http.request("http://localhost:5000/cards/generate/3")
+    
+    parsed = json.decode(result)
 
     for i=1,deckSize do
-        deck[i] = cardScript.createCard(1, 2, 3, "/Card/BackTexture.png", "/Card/FrontTexture.png")
+        deck[i] = cardScript.createCard(parsed.POW, parsed.HP, parsed.CLK, "/Card/BackTexture.png", "/Card/FrontTexture.png")
     end
 
     for i=1,handSize do
