@@ -1,7 +1,7 @@
 import deviantart
 import random
 import re
-import config
+import modules.config as config
 
 # Connect API
 da = deviantart.Api(config.client_id, config.client_secret)
