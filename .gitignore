@@ -1,5 +1,6 @@
 *.swp
 config.py
+.DS_Store
 
 ### LUA/LOVE
 # Compiled Lua sources
