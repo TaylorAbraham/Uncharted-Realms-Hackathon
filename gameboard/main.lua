@@ -1,5 +1,6 @@
 local http = require "socket.http"
 local cardScript = require("Script.card")
+local json = require "Script.json"
 local scaleX, scaleY
 
 deckSize = 30
@@ -11,8 +12,10 @@ hand = {}
 function love.load()
     canvas = love.graphics.newCanvas(800, 600)
 
+    result, statuscode, content = http.request("http://localhost:5000/cards/generate/3")    
+
     for i=1,deckSize do
-        deck[i] = cardScript.createCard(1, 2, 3, "/Card/BackTexture.png", "/Card/FrontTexture.png", "http://piq.codeus.net/static/media/userpics/piq_415347_400x400.png")
+        deck[i] = cardScript.createCard(1, 2, 3, "/Card/BackTexture.png", "/Card/FrontTexture.png")
     end
 
     for i=1,handSize do
@@ -78,28 +81,6 @@ function love.draw()
     love.graphics.draw(canvas)
 end
 
-function love.load()
-    
-       --require lure library
-       require('lure//lure.lua')
-    
-       --create new XMLHttpRequest Object
-       http = XMLHttpRequest.new()
-    
-       --create a new request, set method, url, and sync option
-       http.open("GET", "/cards/generate/3", true)
-    
-       --create callback function to trigger when request readyState changes
-       http.onReadyStateChange = function()
-           print(http.readyState)
-           print(http.status)
-           print(http.statusText)
-           print(http.responseText)	
-       end
-    
-       --send your GET request!
-       http.send()
-   end
 
 function getImageScaleForNewDimensions( image, newWidth, newHeight )
     local currentWidth, currentHeight = image:getDimensions()
