@@ -26,10 +26,12 @@ function love.load()
     end
     
     p1 = Player:new(deck,"test")
-    print(p1.deck[1].power)
+    p1:drawHand()
+    --[[print(p1.deck[1].power)
     print(p1.hand[1].power)
     print(p1.hand[2].power)
-    print(p1.hand[3].power)
+    print(p1.hand[3].power)--]]
+    
 
     -- Rectangle is drawn to the canvas with the regular alpha blend mode.
     love.graphics.setCanvas(canvas)
@@ -41,7 +43,13 @@ function love.load()
         love.graphics.setLineWidth(5)
         love.graphics.line(0, 300, 800, 300)
     love.graphics.setCanvas()
-
+    
+    --[[local exit=false
+    while(not exit)
+    do
+      exit=p1:turn()
+    end
+    print("end")--]]
 end
  
 function love.draw()
@@ -59,6 +67,9 @@ function love.draw()
     end
 
     love.graphics.draw(canvas)
+    p1= Player:new(deck,"test")
+    p1:turn()
+
 end
 
 
