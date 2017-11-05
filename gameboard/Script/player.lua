@@ -37,33 +37,46 @@ end
 
 function Player:turn()
   --self:draw()
-  for i=1, handSize do
-      if(hand[i].clock==0)then
+  --[[for i=1, handSize do
+      if(hand[i].clock == 0)then
         table.insert(self.field,-1,self:popHand(i))
         table.insert(self.hand, deck[1])
         table.remove(deck, 1)
         self.fieldSize = self.fieldSize+1
       end
-  end
+  end]]
     
-  for i=1, fieldSize do
-    self:attack(self.field[i])
+  
+  for i=1, self.handSize do
+    if(hand[i].clock == 0) then
+      if(self.fieldSize <=4) then
+        table.insert(self.field, self:popHand(i))
+        self.fieldSize = self.fieldSize + 1     
+        table.insert(self.hand,i , self.deck[1])
+        table.remove(self.deck, 1)
+      end
+    end
+
+    if(hand[i].clock > 0) then
+      hand[i].clock = hand[i].clock - 1
+    end
   end
 
-  
-  for i=1, handSize do
-    hand[i].clock = hand[i].clock - 1
-    --print(cad.clock)
+  for i=1, self.fieldSize do
+    field[i]:drawpng_front(300*i - 200, 200)
+    if(p1.health > 0) then
+      self:attack(self.field[i])    
+    else
+      p1.health = 0
+    end
   end
-      
+
 end
 
 function Player:attack(card)
   self.health=self.health-card.power
   print(self.health)
-  if(p1.health<=0)then
-    self.exit=true
-  end
+
 
 
 end

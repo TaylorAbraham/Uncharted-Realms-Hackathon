@@ -4,7 +4,7 @@ local scaleX, scaleY
 require("Script.card")
 require("Script.player")
 
-deckSize = 8
+deckSize = 12
 handSize = 3
 fieldSize = 0
 
@@ -17,7 +17,7 @@ function love.load()
 
     love.window.setMode(1280, 800, {resizable=false, vsync=false, minwidth=400, minheight=300})    
 
-    result, statuscode, content = http.request("http://localhost:5000/cards/generate/8")
+    result, statuscode, content = http.request("http://localhost:5000/cards/generate/12")
         
     parsedResult = json.decode(result)
 
@@ -73,10 +73,20 @@ function love.draw()
         hand[i]:drawpng_front(300*i - 200,500)
     end
 
+
     love.graphics.draw(canvas)
-    
+
     p1:turn()
+
+    heart = love.graphics.newImage("/Card/heart.png")
+    scaleX, scaleY = getImageScaleForNewDimensions(heart, 100, 100)    
+    love.graphics.draw(heart, 1100, 100, 0, scaleX, scaleY)
+    love.graphics.print(p1.health,1200, 100, 0, 3,3)
     
+end
+
+function love.update(dt)
+
 end
 
 
