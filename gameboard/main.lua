@@ -2,6 +2,7 @@ local http = require "socket.http"
 local json = require "Script.json"
 local scaleX, scaleY
 require("Script.card")
+require("Script.player")
 
 deckSize = 8
 handSize = 3
@@ -26,6 +27,12 @@ function love.load()
         hand[i] = deck[i]
     end
     
+    p1 = Player:new(deck,"test")
+    print(p1.deck[1].power)
+    print(p1.hand[1].power)
+    print(p1.hand[2].power)
+    print(p1.hand[3].power)
+
     -- Rectangle is drawn to the canvas with the regular alpha blend mode.
     love.graphics.setCanvas(canvas)
         love.graphics.clear()
