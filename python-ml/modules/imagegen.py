@@ -20,5 +20,6 @@ def generate_image_url(cardname):
         deviations = da.browse(endpoint='tags', tag=tag_)
 
     image = random.choice(deviations['results'])
-    return image.url
+    return image.preview['src']
+
 
