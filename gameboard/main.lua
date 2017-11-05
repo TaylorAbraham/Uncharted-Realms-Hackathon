@@ -47,10 +47,10 @@ function love.draw()
     love.graphics.draw(canvas)
     -- Observe the difference if the Canvas is drawn with the regular alpha blend mode instead.
     love.graphics.setBlendMode("alpha")
-    Card:drawpng_back(1000, 465)
+    Card:drawpng_back(1000, 500)
 
     for i=1,handSize do
-        hand[i]:drawpng_front(300*i - 200,465)
+        hand[i]:drawpng_front(300*i - 200, 500)
     end
 
 end
