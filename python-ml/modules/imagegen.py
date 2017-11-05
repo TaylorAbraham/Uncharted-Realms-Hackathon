@@ -19,5 +19,12 @@ def generate_image_url(cardname):
     else:
         deviations = da.browse(endpoint='tags', tag=tag_)
 
-    image = random.choice(deviations['results'])
+    try:
+        image = random.choice(deviations['results'])
+    except IndexError:
+        print("IT ERROR'd")
+        print(deviations)
+        while(deviations == []):
+            deviations = da.browse(endpoint='popular')
+        image = random.choice(deviations['results'])
     return image.url

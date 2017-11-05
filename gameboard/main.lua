@@ -3,7 +3,7 @@ local json = require "Script.json"
 local scaleX, scaleY
 require("Script.card")
 
-deckSize = 30
+deckSize = 8
 handSize = 3
 
 deck = {}
@@ -12,19 +12,14 @@ hand = {}
 function love.load()
     canvas = love.graphics.newCanvas(800, 600)
 
-    result, statuscode, content = http.request("http://localhost:5000/cards/generate/20")
+    result, statuscode, content = http.request("http://localhost:5000/cards/generate/8")
     
     --parsed = json.decode('{"cards": [{"NAME": "Phantom Blink", "HP": 6, "IMG": "https://phantomdotexe.deviantart.com/art/Villains-474588558", "CLK": 5, "POW": 3}]}')
-
     
     parsedResult = json.decode(result)
-    
-
-    -- print("here is")
 
     for i=1,deckSize do
-        deck[i] = Card:createCard(parsedResult.cards[i].POW, parsedResult.cards[i].HP, parsedResult.cards[i].CLK)
-        --deck[i] = Card:createCard(1,2,3)
+        table.insert(deck,i,Card:create(parsedResult.cards[i].POW, parsedResult.cards[i].HP, parsedResult.cards[i].CLK))
     end
 
     for i=1,handSize do
@@ -55,9 +50,9 @@ function love.draw()
     -- cardScript.drawandpos(300, 400, "HI LOVE")
     Card:drawpng_back(600, 480)
 
-    Card:drawpng_front(200, 465)
-    Card:drawpng_front(300, 465)
-    Card:drawpng_front(400, 465)
+    for i=1,handSize do
+        hand[i]:drawpng_front(100+100*i,465)
+    end
 
     love.graphics.draw(canvas)
 end

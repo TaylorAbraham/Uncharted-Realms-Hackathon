@@ -8,32 +8,20 @@ import json
 # Local libraries
 import modules.namegen as namegen
 import modules.imagegen as imagegen
+import modules.mlnetwork as mlnetwork
 
 csv_name = 'data/cards.csv'
 
-HP_vals = [1,1,1,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,6,6,6,7,7,8,8,9,9,10]
+HP_vals = [1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,6,6,6,7,7,8,8,9,9,10]
+EFFs = ['Charge'] * 15 + ['Ward'] * 15
 
 # Generates new cards
-def generate_card(num_cards):
+def generate_cards(num_cards):
     try:
         num_cards = int(num_cards)
     except ValueError:
         return json.dumps({})
-    # Load card data
-    data = pd.read_csv(csv_name, index_col=0)
-
-    # Define features
-    feature_cols = ['POW', 'HP']
-    X = data[feature_cols]
-    y = data.CLK
-
-    # Plot features and create line of best fit
-    fig, axs = plt.subplots(1, 2, sharey=True)
-    data.plot(kind='scatter', x='POW', y='CLK', ax=axs[0], figsize=(16, 8))
-    data.plot(kind='scatter', x='HP', y='CLK', ax=axs[1])
-    lm = smf.ols(formula='CLK ~ POW + HP', data=data).fit() # Find linear fit
-    #fig.show()
-    card_dict = {'NAME': [], 'POW': [], 'HP': [], 'IMG': []}
+    card_dict = {'NAME': [], 'POW': [], 'HP': [], 'IMG': [], 'EFF': []}
     names = []
 
     # Generate base card attributes, to be costed later
@@ -60,11 +48,9 @@ def generate_card(num_cards):
         img = imagegen.generate_image_url(name)
         card_dict['IMG'].append(img)
 
-    cards = pd.DataFrame(card_dict, columns=['NAME', 'POW', 'HP', 'IMG'])
+        card_dict['EFF'].append(random.choice(EFFs))
 
-    # Make predictions and combine the dataframes to form the finished cards
-    costs = pd.DataFrame({'CLK': lm.predict(cards).round(0).astype(int)})
-    results = pd.concat([cards, costs], axis=1)
+    results = mlnetwork.predict_costs(card_dict)
 
     # Build the JSON for the response
     response = {'cards': []}
@@ -77,8 +63,4 @@ def generate_card(num_cards):
         response['cards'][index]['IMG'] = card['IMG']
 
     return json.dumps(response)
-
-if __name__ == "__main__":
-    cards = generate_card(3)
-    print(cards)
 
