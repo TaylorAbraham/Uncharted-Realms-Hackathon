@@ -56,6 +56,7 @@ def generate_cards(num_cards):
         response['cards'][index]['POW'] = card['POW']
         response['cards'][index]['HP'] = card['HP']
         response['cards'][index]['CLK'] = card['CLK']
+        response['cards'][index]['EFF'] = card['EFF']
         response['cards'][index]['IMG'] = card['IMG']
 
     return json.dumps(response)
