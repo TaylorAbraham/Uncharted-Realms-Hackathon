@@ -64,10 +64,7 @@ function Card:drawpng_front(x, y)
     scaleX, scaleY = getImageScaleForNewDimensions(framefront, 190, 272)
     love.graphics.draw(framefront, x , y, 0, scaleX, scaleY)
 
-
-
 end
-
 
 function Card:getImageScaleForNewDimensions( image, newWidth, newHeight )
     local currentWidth, currentHeight = image:getDimensions()

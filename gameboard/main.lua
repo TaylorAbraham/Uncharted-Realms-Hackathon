@@ -50,7 +50,7 @@ function love.draw()
     Card:drawpng_back(1000, 500)
 
     for i=1,handSize do
-        hand[i]:drawpng_front(300*i - 200, 500)
+        hand[i]:drawpng_front(300*i - 200,500)
     end
 
 end
