@@ -14,13 +14,11 @@ function love.load()
     canvas = love.graphics.newCanvas(800, 600)
 
     result, statuscode, content = http.request("http://localhost:5000/cards/generate/8")
-    
-    --parsed = json.decode('{"cards": [{"NAME": "Phantom Blink", "HP": 6, "IMG": "https://phantomdotexe.deviantart.com/art/Villains-474588558", "CLK": 5, "POW": 3}]}')
-    
+        
     parsedResult = json.decode(result)
 
     for i=1,deckSize do
-        table.insert(deck,i,Card:create(parsedResult.cards[i].POW, parsedResult.cards[i].HP, parsedResult.cards[i].CLK))
+        table.insert(deck,i,Card:create(parsedResult.cards[i].POW, parsedResult.cards[i].HP, parsedResult.cards[i].CLK, parsedResult.cards[i].NAME))
     end
 
     for i=1,handSize do
@@ -54,11 +52,10 @@ function love.draw()
     love.graphics.draw(canvas)
     -- Observe the difference if the Canvas is drawn with the regular alpha blend mode instead.
     love.graphics.setBlendMode("alpha")
-    -- cardScript.drawandpos(300, 400, "HI LOVE")
     Card:drawpng_back(600, 480)
 
     for i=1,handSize do
-        hand[i]:drawpng_front(100+100*i,465)
+        hand[i]:drawpng_front(200*i - 200,465)
     end
 
     love.graphics.draw(canvas)

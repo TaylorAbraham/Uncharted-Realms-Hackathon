@@ -3,12 +3,13 @@ local http = require "socket.http"
 Card = {}
 Card.__index = Card
 
-function Card:create(atk, def, clk)
+function Card:create(atk, def, clk, name)
   local crd = {}
   setmetatable(crd, Card)
   crd.power = atk
   crd.toughness = def
   crd.clock = clk
+  crd.name = name
   return crd
 end
 
@@ -39,19 +40,21 @@ function Card:drawpng_back(x, y)
     love.graphics.draw(frameback, x, y, 0, scaleX, scaleY)
 end
 
-function Card:drawpng_front(x, y)
+function Card:drawpng_front(x, y, name)
     -- Card
     drawn = love.graphics.newImage(front)
-    scaleX, scaleY = getImageScaleForNewDimensions(drawn, 80, 135)
+    scaleX, scaleY = getImageScaleForNewDimensions(drawn, 150, 135)
     love.graphics.draw(drawn, x , y, 0, scaleX, scaleY)
-    love.graphics.print("Atk: " .. self.power, x+20, y+80, 0, 1, 0.9)
-    love.graphics.print("Def: " .. self.toughness, x+20, y+95, 0, 1, 0.9) 
-    love.graphics.print("Clock: " .. self.clock, x+17, y+108, 0, 1, 0.9)    
+    love.graphics.print(self.name, x+15, y+10, 0, 0.9, 0.9)        
+    love.graphics.print("Atk: " .. self.power, x+20, y+92, 0, 1, 0.9)
+    love.graphics.print("Def: " .. self.toughness, x+20, y+103, 0, 1, 0.9) 
+    love.graphics.print("Clock: " .. self.clock, x+15, y+114, 0, 1, 0.9)
 
     -- Borders
     framefront = love.graphics.newImage(frame)
-    scaleX, scaleY = getImageScaleForNewDimensions(framefront, 80, 135)
+    scaleX, scaleY = getImageScaleForNewDimensions(framefront, 150, 135)
     love.graphics.draw(framefront, x , y, 0, scaleX, scaleY)
+
 end
 
 
