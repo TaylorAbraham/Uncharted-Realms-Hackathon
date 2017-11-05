@@ -6,9 +6,11 @@ require("Script.player")
 
 deckSize = 8
 handSize = 3
+fieldSize = 0
 
 deck = {}
 hand = {}
+field = {}
 
 function love.load()
     canvas = love.graphics.newCanvas(1280, 800)
@@ -25,10 +27,13 @@ function love.load()
 
     for i=1,handSize do
         hand[i] = deck[i]
+        table.remove(deck,i)
     end
     
-    p1 = Player:new(deck,"test")
-    p1:drawHand()
+    p1= Player:new(deck,"player", hand, field, handSize, deckSize, fieldSize)
+
+    
+
     --[[print(p1.deck[1].power)
     print(p1.hand[1].power)
     print(p1.hand[2].power)
@@ -69,9 +74,9 @@ function love.draw()
     end
 
     love.graphics.draw(canvas)
-    p1= Player:new(deck,"test")
+    
     p1:turn()
-
+    
 end
 
 

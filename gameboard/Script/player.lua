@@ -3,21 +3,19 @@ Player = {}
 Player.__index = Player
 
 
-function Player:new(deck, name)
+function Player:new(deck, name, hand, field, handSize, deckSize, fieldSize)
   local pl ={}
   setmetatable(pl, Player)
   pl.deck = deck
   pl.name = name
   pl.health=30
-  pl.field={}
-  pl.hand={}
+  pl.field=field
+  pl.hand=hand
+  pl.handSize = handSize;
+  pl.deckSize = deckSize;
+  pl.fieldSize = fieldSize;
   pl.exit=false
-  pl.fieldsize=0
   return pl
-end
-
-function Player:drawHand()
-  for i=1,3 do table.insert(self.hand,i,self:popDeck()) end
 end
 
 
@@ -38,24 +36,26 @@ function Player:popHand(i)
 end 
 
 function Player:turn()
-  self:draw()
-  for i, card in ipairs(self.hand) do
-      if(card.clock==0)then
+  --self:draw()
+  for i=1, handSize do
+      if(hand[i].clock==0)then
         table.insert(self.field,-1,self:popHand(i))
+        table.insert(self.hand, deck[1])
+        table.remove(deck, 1)
+        self.fieldSize = self.fieldSize+1
       end
   end
     
-  for j, crd in ipairs(self.field) do
-    self:attack(crd)
+  for i=1, fieldSize do
+    self:attack(self.field[i])
   end
-  
-  for k, cad in ipairs(self.hand) do
-    cad.clock=cad.clock-1
-    --print(cad.clock)
-  end   
-      
-  return self.exit
 
+  
+  for i=1, handSize do
+    hand[i].clock = hand[i].clock - 1
+    --print(cad.clock)
+  end
+      
 end
 
 function Player:attack(card)
