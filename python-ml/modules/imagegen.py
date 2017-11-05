@@ -19,7 +19,6 @@ def generate_image_url(cardname):
     if(tag_ == ""):
         # No tag was found, so pick some random deviations
         while(deviations['results'] == []):
-            print(cardname)
             deviations = da.browse(endpoint='popular')
     else:
         # Browse deviations of that tag
@@ -27,7 +26,6 @@ def generate_image_url(cardname):
         if(deviations['results'] == []):
             # No tag was found, so pick some random deviations
             while(deviations['results'] == []):
-                print(tag_)
                 deviations = da.browse(endpoint='popular')
 
 
