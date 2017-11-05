@@ -2,14 +2,16 @@ local http = require "socket.http"
 
 Card = {}
 Card.__index = Card
+local logo
 
-function Card:create(atk, def, clk, name)
+function Card:create(atk, def, clk, name, link)
   local crd = {}
   setmetatable(crd, Card)
   crd.power = atk
   crd.toughness = def
   crd.clock = clk
   crd.name = name
+  crd.link = link
   return crd
 end
 
@@ -26,6 +28,7 @@ function Card:get_clock()
 end
 
 
+
 back =  "/Card/BackTexture.png"
 front =  "/Card/FrontTexture.png"
 frame= "/Card/GoldFrame.png"
@@ -40,7 +43,7 @@ function Card:drawpng_back(x, y)
     love.graphics.draw(frameback, x, y, 0, scaleX, scaleY)
 end
 
-function Card:drawpng_front(x, y, name)
+function Card:drawpng_front(x, y)
     -- Card
     drawn = love.graphics.newImage(front)
     scaleX, scaleY = getImageScaleForNewDimensions(drawn, 150, 135)
@@ -50,10 +53,18 @@ function Card:drawpng_front(x, y, name)
     love.graphics.print("Def: " .. self.toughness, x+20, y+103, 0, 1, 0.9) 
     love.graphics.print("Clock: " .. self.clock, x+15, y+114, 0, 1, 0.9)
 
+    logo = http.request(self.link)
+    logo = love.filesystem.newFileData(logo, "logo.png")
+    logo = love.graphics.newImage(logo)
+    scaleX, scaleY = getImageScaleForNewDimensions(logo, 100, 100)
+    love.graphics.draw(logo, x+15, y+50, 0, scaleX, scaleY)
+
     -- Borders
     framefront = love.graphics.newImage(frame)
     scaleX, scaleY = getImageScaleForNewDimensions(framefront, 150, 135)
     love.graphics.draw(framefront, x , y, 0, scaleX, scaleY)
+
+
 
 end
 

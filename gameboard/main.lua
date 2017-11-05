@@ -17,7 +17,7 @@ function love.load()
     parsedResult = json.decode(result)
 
     for i=1,deckSize do
-        table.insert(deck,i,Card:create(parsedResult.cards[i].POW, parsedResult.cards[i].HP, parsedResult.cards[i].CLK, parsedResult.cards[i].NAME))
+        table.insert(deck,i,Card:create(parsedResult.cards[i].POW, parsedResult.cards[i].HP, parsedResult.cards[i].CLK, parsedResult.cards[i].NAME, parsedResult.cards[i].IMG))
     end
 
     for i=1,handSize do
