@@ -1,7 +1,7 @@
 local http = require "socket.http"
-local cardScript = require("Script.card")
 local json = require "Script.json"
 local scaleX, scaleY
+require("Script.card")
 
 deckSize = 30
 handSize = 3
@@ -14,29 +14,22 @@ function love.load()
 
     result, statuscode, content = http.request("http://localhost:5000/cards/generate/3")
     
-    parsed = json.decode(result)
+    --parsed = json.decode('{"cards": [{"NAME": "Phantom Blink", "HP": 6, "IMG": "https://phantomdotexe.deviantart.com/art/Villains-474588558", "CLK": 5, "POW": 3}]}')
+
+    parsedResult = json.decode(result)
+
+    --print("'".."result".."'")
+
+    -- print("here is")
+    -- print(parsed.cards[1].HP)
 
     for i=1,deckSize do
-        deck[i] = cardScript.createCard(parsed.POW, parsed.HP, parsed.CLK, "/Card/BackTexture.png", "/Card/FrontTexture.png")
+        deck[i] = Card:createCard(parsedResult.cards[i].POW, parsedResult.cards[i].HP, parsedResult.cards[i].CLK)
     end
 
     for i=1,handSize do
         hand[i] = deck[i]
     end
-
-    -- cardScript.init(200, 100)   
-
-    -- cat = http.request("http://piq.codeus.net/static/media/userpics/piq_415347_400x400.png")
-    -- cat = love.filesystem.newFileData(cat, "cat.png")
-    -- cat = love.graphics.newImage(cat)
-
-    -- scaleX, scaleY = getImageScaleForNewDimensions(cat, 100, 100)
-    
-
-    -- cat2 = http.request("http://pixelartmaker.com/art/f48aa81644fa18f.png")
-    -- cat2 = http.request("https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg")
-    -- cat2 = love.filesystem.newFileData(cat2, "cat2.png")
-    -- cat2 = love.graphics.newImage(cat2)
     
     -- Rectangle is drawn to the canvas with the regular alpha blend mode.
     love.graphics.setCanvas(canvas)
@@ -52,9 +45,6 @@ function love.load()
 end
  
 function love.draw()
-    -- very important!: reset color before drawing to canvas to have colors properly displayed
-    -- see discussion here: https://love2d.org/forums/viewtopic.php?f=4&p=211418#p211418
-    -- love.graphics.setColor(255, 255, 255, 255)
  
     -- The rectangle from the Canvas was already alpha blended.
     -- Use the premultiplied alpha blend mode when drawing the Canvas itself to prevent improper blending.
@@ -63,23 +53,12 @@ function love.draw()
     -- Observe the difference if the Canvas is drawn with the regular alpha blend mode instead.
     love.graphics.setBlendMode("alpha")
     -- cardScript.drawandpos(300, 400, "HI LOVE")
-    cardScript.drawpng_back(600, 480)
+    Card:drawpng_back(600, 480)
 
-    cardScript.drawpng_front(200, 465)
-    cardScript.drawpng_front(300, 465)
-    cardScript.drawpng_front(400, 465)
-    -- love.graphics.draw(cat, 300, 300, 0, 0.5, 0.5)
-    -- love.graphics.draw(cat2, 300, 100, 0, 0.5, 0.5)
+    Card:drawpng_front(200, 465)
+    Card:drawpng_front(300, 465)
+    Card:drawpng_front(400, 465)
 
-    -- scaleX, scaleY = getImageScaleForNewDimensions(cat, 30, 30)    
-
-    --love.graphics.draw(cat, 200, 540, 0, scaleX, scaleY)
-
-    --scaleX, scaleY = getImageScaleForNewDimensions(cat2, 50, 50)
-    
-    --love.graphics.draw(cat2, 300, 500, 0, scaleX, scaleY)
-
-    -- cardScript.draw()
     love.graphics.draw(canvas)
 end
 
