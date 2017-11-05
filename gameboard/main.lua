@@ -17,7 +17,7 @@ function love.load()
     parsed = json.decode('{"cards": [{"NAME": "Phantom Blink", "HP": 6, "IMG": "https://phantomdotexe.deviantart.com/art/Villains-474588558", "CLK": 5, "POW": 3}]}')
 
 
-    print("Result is: "..result)
+    print(result)
     print("content is: "..content)    
     --parsedResult = json.decode(result)
     
