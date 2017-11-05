@@ -2,6 +2,7 @@ local http = require "socket.http"
 local json = require "Script.json"
 local scaleX, scaleY
 require("Script.card")
+require("Script.player")
 
 deckSize = 8
 handSize = 3
@@ -26,6 +27,14 @@ function love.load()
         hand[i] = deck[i]
     end
     
+    p1 = Player:new(deck,"test")
+    p1:drawHand()
+    --[[print(p1.deck[1].power)
+    print(p1.hand[1].power)
+    print(p1.hand[2].power)
+    print(p1.hand[3].power)--]]
+    
+
     -- Rectangle is drawn to the canvas with the regular alpha blend mode.
     love.graphics.setCanvas(canvas)
         love.graphics.clear()
@@ -36,7 +45,13 @@ function love.load()
         love.graphics.setLineWidth(5)
         love.graphics.line(0, 300, 1280, 300)
     love.graphics.setCanvas()
-
+    
+    --[[local exit=false
+    while(not exit)
+    do
+      exit=p1:turn()
+    end
+    print("end")--]]
 end
  
 function love.draw()
@@ -52,6 +67,10 @@ function love.draw()
     for i=1,handSize do
         hand[i]:drawpng_front(300*i - 200, 500)
     end
+
+    love.graphics.draw(canvas)
+    p1= Player:new(deck,"test")
+    p1:turn()
 
 end
 
