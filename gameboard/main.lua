@@ -10,7 +10,9 @@ deck = {}
 hand = {}
 
 function love.load()
-    canvas = love.graphics.newCanvas(800, 600)
+    canvas = love.graphics.newCanvas(1280, 800)
+
+    love.window.setMode(1280, 800, {resizable=false, vsync=false, minwidth=400, minheight=300})    
 
     result, statuscode, content = http.request("http://localhost:5000/cards/generate/8")
         
@@ -29,10 +31,10 @@ function love.load()
         love.graphics.clear()
         love.graphics.setBlendMode("alpha")
         love.graphics.setBackgroundColor(250, 215, 160)
-        love.graphics.line(0, 445, 800, 445)
+        love.graphics.line(0, 445, 1280, 445)
 
         love.graphics.setLineWidth(5)
-        love.graphics.line(0, 300, 800, 300)
+        love.graphics.line(0, 300, 1280, 300)
     love.graphics.setCanvas()
 
 end
@@ -45,13 +47,12 @@ function love.draw()
     love.graphics.draw(canvas)
     -- Observe the difference if the Canvas is drawn with the regular alpha blend mode instead.
     love.graphics.setBlendMode("alpha")
-    Card:drawpng_back(600, 480)
+    Card:drawpng_back(1000, 465)
 
     for i=1,handSize do
-        hand[i]:drawpng_front(200*i - 200,465)
+        hand[i]:drawpng_front(300*i - 200,465)
     end
 
-    love.graphics.draw(canvas)
 end
 
 
