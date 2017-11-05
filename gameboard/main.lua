@@ -12,19 +12,21 @@ hand = {}
 function love.load()
     canvas = love.graphics.newCanvas(800, 600)
 
-    result, statuscode, content = http.request("http://localhost:5000/cards/generate/3")
+    result, statuscode, content = http.request("http://localhost:5000/cards/generate/20")
     
-    --parsed = json.decode('{"cards": [{"NAME": "Phantom Blink", "HP": 6, "IMG": "https://phantomdotexe.deviantart.com/art/Villains-474588558", "CLK": 5, "POW": 3}]}')
+    parsed = json.decode('{"cards": [{"NAME": "Phantom Blink", "HP": 6, "IMG": "https://phantomdotexe.deviantart.com/art/Villains-474588558", "CLK": 5, "POW": 3}]}')
 
-    parsedResult = json.decode(result)
 
-    --print("'".."result".."'")
+    print("Result is: "..result)
+    print("content is: "..content)    
+    --parsedResult = json.decode(result)
+    
 
     -- print("here is")
-    -- print(parsed.cards[1].HP)
 
     for i=1,deckSize do
-        deck[i] = Card:createCard(parsedResult.cards[i].POW, parsedResult.cards[i].HP, parsedResult.cards[i].CLK)
+        --deck[i] = Card:createCard(parsedResult.cards[i].POW, parsedResult.cards[i].HP, parsedResult.cards[i].CLK)
+        deck[i] = Card:createCard(1,2,3)
     end
 
     for i=1,handSize do
