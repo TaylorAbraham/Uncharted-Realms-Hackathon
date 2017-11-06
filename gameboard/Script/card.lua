@@ -2,7 +2,12 @@ local http = require "socket.http"
 
 Card = {}
 Card.__index = Card
-local logo
+local card_art
+
+back      = "/Card/BackTexture.png"
+front     = "/Card/FrontTexture.png"
+frame     = "/Card/GoldFrame.png"
+deckframe = "/Card/SilverFrame.png"
 
 function Card:create(atk, def, clk, name, link)
   local crd = {}
@@ -15,24 +20,22 @@ function Card:create(atk, def, clk, name, link)
   return crd
 end
 
+
+-- Getters
 function Card:get_power()
   return self.power
 end
+
 
 function Card:get_toughness()
   return self.toughness
 end
 
+
 function Card:get_clock()
   return self.clock
 end
 
-
-
-back =  "/Card/BackTexture.png"
-front =  "/Card/FrontTexture.png"
-frame= "/Card/GoldFrame.png"
-deckframe="/Card/SilverFrame.png"
 
 function Card:drawpng_back(x, y)
     drawn = love.graphics.newImage(back)
@@ -42,6 +45,7 @@ function Card:drawpng_back(x, y)
     scaleX, scaleY = getImageScaleForNewDimensions(frameback, 200, 275)
     love.graphics.draw(frameback, x, y, 0, scaleX, scaleY)
 end
+
 
 function Card:drawpng_front(x, y)
     -- Card
@@ -53,11 +57,11 @@ function Card:drawpng_front(x, y)
     love.graphics.print("Def: " .. self.toughness, x+25, y+218, 0, 1, 1) 
     love.graphics.print("Clock: " .. self.clock, x+25, y+238, 0, 1, 1)
 
-    logo = http.request(self.link)
-    logo = love.filesystem.newFileData(logo, "logo.png")
-    logo = love.graphics.newImage(logo)
-    scaleX, scaleY = getImageScaleForNewDimensions(logo, 130, 130)
-    love.graphics.draw(logo, x+30, y+40, 0, scaleX, scaleY)
+    card_art = http.request(self.link)
+    card_art = love.filesystem.newFileData(card_art, "logo.png")
+    card_art = love.graphics.newImage(card_art)
+    scaleX, scaleY = getImageScaleForNewDimensions(card_art, 130, 130)
+    love.graphics.draw(card_art, x+30, y+40, 0, scaleX, scaleY)
 
     -- Borders
     framefront = love.graphics.newImage(frame)
@@ -65,7 +69,9 @@ function Card:drawpng_front(x, y)
     love.graphics.draw(framefront, x , y, 0, scaleX, scaleY)
 end
 
+
 function Card:getImageScaleForNewDimensions( image, newWidth, newHeight )
     local currentWidth, currentHeight = image:getDimensions()
     return ( newWidth / currentWidth ), ( newHeight / currentHeight )
 end
+

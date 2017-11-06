@@ -1,64 +1,58 @@
+require("Script.card")
+require("Script.player")
 local http = require "socket.http"
 local json = require "Script.json"
 local scaleX, scaleY
-require("Script.card")
-require("Script.player")
 
-deckSize = 12
-handSize = 3
-fieldSize = 0
+local deckSize = 12
+local handSize = 3
+local fieldSize = 0
+local timer = 0
 
 deck = {}
 hand = {}
 field = {}
 
+-- Run once, at the start of the program
 function love.load()
+
     canvas = love.graphics.newCanvas(1280, 800)
 
     love.window.setMode(1280, 800, {resizable=false, vsync=false, minwidth=400, minheight=300})    
 
+    -- Fetch 12 random cards for the deck
+    -- TODO: This will later be replaced by loading in the deck built from a deck editor
     result, statuscode, content = http.request("http://localhost:5000/cards/generate/12")
-        
+
     parsedResult = json.decode(result)
 
+    -- Add cards to the deck
     for i=1,deckSize do
         table.insert(deck,i,Card:create(parsedResult.cards[i].POW, parsedResult.cards[i].HP, parsedResult.cards[i].CLK, parsedResult.cards[i].NAME, parsedResult.cards[i].IMG))
     end
 
+    -- Draw opening hand
     for i=1,handSize do
-        hand[i] = deck[i]
-        table.remove(deck,i)
+      hand[i] = deck[i]
     end
-    
-    p1= Player:new(deck,"player", hand, field, handSize, deckSize, fieldSize)
 
-    
-
-    --[[print(p1.deck[1].power)
-    print(p1.hand[1].power)
-    print(p1.hand[2].power)
-    print(p1.hand[3].power)--]]
-    
+    -- Create players
+    p1 = Player:new(deck,"player", hand, field, handSize, deckSize, fieldSize)
 
     -- Rectangle is drawn to the canvas with the regular alpha blend mode.
     love.graphics.setCanvas(canvas)
-        love.graphics.clear()
-        love.graphics.setBlendMode("alpha")
-        love.graphics.setBackgroundColor(250, 215, 160)
-        love.graphics.line(0, 445, 1280, 445)
+    love.graphics.clear()
+    love.graphics.setBlendMode("alpha")
+    love.graphics.setBackgroundColor(250, 215, 160)
+    love.graphics.line(0, 445, 1280, 445)
 
-        love.graphics.setLineWidth(5)
-        love.graphics.line(0, 300, 1280, 300)
+    love.graphics.setLineWidth(5)
+    love.graphics.line(0, 300, 1280, 300)
     love.graphics.setCanvas()
-    
-    --[[local exit=false
-    while(not exit)
-    do
-      exit=p1:turn()
-    end
-    print("end")--]]
+
 end
  
+-- Run every frame
 function love.draw()
  
     -- The rectangle from the Canvas was already alpha blended.
@@ -69,15 +63,16 @@ function love.draw()
     love.graphics.setBlendMode("alpha")
     Card:drawpng_back(1000, 500)
 
+    -- Draw every card in hand
     for i=1,handSize do
         hand[i]:drawpng_front(300*i - 200,500)
     end
 
-
+    -- Draw the canvas
     love.graphics.draw(canvas)
 
-    p1:turn()
 
+    -- Draw player health
     heart = love.graphics.newImage("/Card/heart.png")
     scaleX, scaleY = getImageScaleForNewDimensions(heart, 100, 100)    
     love.graphics.draw(heart, 1100, 100, 0, scaleX, scaleY)
@@ -86,6 +81,14 @@ function love.draw()
 end
 
 function love.update(dt)
+
+    timer=timer+dt
+    if timer > 2 then 
+        -- Run this every 2 seconds
+        -- Perform all player actions for the turn
+        p1:turn()
+        timer=timer-2
+    end
 
 end
 
