@@ -13,6 +13,7 @@ def generate(qty):
     return "" + response + ""
 
 if __name__ == "__main__":
+    # This is a developer mode simulation of arena mode, to be migrated to the game
     uinput = ""
     while(uinput != "exit"):
         response = cardgen.generate_cards(3)
@@ -20,10 +21,15 @@ if __name__ == "__main__":
         if(uinput.isdigit()):
             if(int(uinput) >= 0 and int(uinput) <= 2):
                 response = json.loads(response)
-                card = response['cards'][int(uinput)]
                 with open('data/cards.csv', 'a') as csvfile:
                     f = csv.writer(csvfile)
-                    f.writerow([None, card['POW'], card['HP'], card['CLK'], card['EFF']])
+                    for counter, card in enumerate(response['cards']):
+                        # For each card in the response, update its rank based on if it was picked
+                        if(counter == int(uinput)):
+                            card['RANK'] = 7 # Picked cards get a rank of 7
+                        else:
+                            card['RANK'] = 4 # Unpicked cards get a rank of 4
+                        f.writerow([None, card['POW'], card['HP'], card['CLK'], card['EFF'], card['RANK']])
                 continue
         print("Invalid input")
     app.run()

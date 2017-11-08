@@ -14,7 +14,7 @@ def predict_costs(card_dict):
     # First, convert the EFF list to one hot
     df = pd.concat([df, pd.get_dummies(df['EFF'])], axis=1)
     df = df.drop(['EFF'], axis=1) # Drop the old EFF feature
-    print(df)
+    # Uncomment this if you need to validate input to the regressor
     #print(df)
     X = df.drop(['CLK'], axis=1)
     y = df.CLK
@@ -27,11 +27,12 @@ def predict_costs(card_dict):
     rfc = RandomForestClassifier(n_jobs=-1,max_features= 'sqrt' , n_estimators=70, oob_score = True, random_state=2)
     rfc.fit(X, y)
 
-    ## Convert the card dict to a DataFrame
+    ## Convert the randomly generated card dict to a DataFrame
     df_cards = pd.DataFrame(card_dict, columns=['NAME', 'POW', 'HP', 'EFF', 'IMG'])
     cards = df_cards
     cards['Charge'] = 0
     cards['Ward'] = 0
+    cards['RANK'] = 0
     cards = pd.concat([cards, pd.get_dummies(cards['EFF'])], axis=1)
     cards = cards.drop(['EFF'], axis=1) # Drop the old EFF feature
     cards = cards.groupby(lambda x:x, axis=1).sum()
